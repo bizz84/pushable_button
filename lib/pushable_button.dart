@@ -12,13 +12,16 @@ class PushableButton extends StatefulWidget {
     required this.bottomColor,
     required this.height,
     this.elevation = 8.0,
+    this.shadow,
     this.onPressed,
-  }) : super(key: key);
+  })  : assert(height > 0),
+        super(key: key);
   final Widget? child;
   final Color topColor;
   final Color bottomColor;
   final double height;
   final double elevation;
+  final BoxShadow? shadow;
   final VoidCallback? onPressed;
 
   @override
@@ -123,6 +126,8 @@ class _PushableButtonState extends AnimationControllerState<PushableButton> {
                         height: totalHeight - top,
                         decoration: BoxDecoration(
                           color: widget.bottomColor,
+                          boxShadow:
+                              widget.shadow != null ? [widget.shadow!] : [],
                           borderRadius:
                               BorderRadius.circular(widget.height / 2),
                         ),
