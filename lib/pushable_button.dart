@@ -8,8 +8,8 @@ class PushableButton extends StatefulWidget {
   const PushableButton({
     Key? key,
     this.child,
-    required this.topColor,
-    required this.bottomColor,
+    required this.hsvColor,
+    //required this.bottomColor,
     required this.height,
     this.elevation = 8.0,
     this.shadow,
@@ -17,8 +17,8 @@ class PushableButton extends StatefulWidget {
   })  : assert(height > 0),
         super(key: key);
   final Widget? child;
-  final Color topColor;
-  final Color bottomColor;
+  final HSVColor hsvColor;
+  //final Color bottomColor;
   final double height;
   final double elevation;
   final BoxShadow? shadow;
@@ -115,6 +115,8 @@ class _PushableButtonState extends AnimationControllerState<PushableButton> {
               animation: animationController,
               builder: (context, child) {
                 final top = animationController.value * widget.elevation;
+                final hsvColor = widget.hsvColor;
+                final bottomHsvColor = hsvColor.withValue(hsvColor.value - 0.3);
                 return Stack(
                   children: [
                     // Draw bottom layer first
@@ -125,7 +127,7 @@ class _PushableButtonState extends AnimationControllerState<PushableButton> {
                       child: Container(
                         height: totalHeight - top,
                         decoration: BoxDecoration(
-                          color: widget.bottomColor,
+                          color: bottomHsvColor.toColor(),
                           boxShadow:
                               widget.shadow != null ? [widget.shadow!] : [],
                           borderRadius:
@@ -141,7 +143,7 @@ class _PushableButtonState extends AnimationControllerState<PushableButton> {
                       child: Container(
                         height: widget.height,
                         decoration: ShapeDecoration(
-                          color: widget.topColor,
+                          color: hsvColor.toColor(),
                           shape: StadiumBorder(),
                         ),
                         child: Center(child: widget.child),
