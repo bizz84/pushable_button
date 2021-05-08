@@ -117,7 +117,7 @@ class _PushableButtonState extends AnimationControllerState<PushableButton> {
                 final top = animationController.value * widget.elevation;
                 final hslColor = widget.hslColor;
                 final bottomHslColor =
-                    hslColor.withLightness(hslColor.lightness - 0.3);
+                    hslColor.withLightness(hslColor.lightness - 0.15);
                 return Stack(
                   children: [
                     // Draw bottom layer first
