@@ -1,14 +1,34 @@
-# pushable_button
+# Pushable Button
 
-A new Flutter package project.
+A 3D pushable button. Ideal for important CTAs in the app.
 
-## Getting Started
+![](media/pushable_button.gif)
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+## Usage
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+```dart
+PushableButton(
+  child: Text('ENROLL NOW', style: someTextStyle),
+  height: 60,
+  elevation: 8,
+  hslColor: HSLColor.fromAHSL(1.0, 120, 1.0, 0.37),
+  shadow: BoxShadow(
+    color: Colors.grey.withOpacity(0.5),
+    spreadRadius: 5,
+    blurRadius: 7,
+    offset: Offset(0, 2),
+  ),
+  onPressed: () => setState(() => _selection = '2'),
+)
+```
+
+## Configurable Properties
+
+- **child**: child widget to show inside the button
+- **height**: height of the top layer
+- **elevation**: gap between the top and bottom layer
+- **hslColor**: color of the top layer. `HSLColor` is used instead of `Color` so that the bottom layer is automatically calculated by reducing the luminosity
+- **shadow**: which shadow to use
+- **onPressed**: button callback
+
+### [LICENSE: MIT](LICENSE.md)
