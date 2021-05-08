@@ -71,15 +71,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () => setState(() => _selection = '3'),
               ),
               SizedBox(height: 32),
-              PushableButton(
-                child: Text('SUBSCRIBE', style: textStyle),
-                height: 60,
-                elevation: 8,
-                hslColor: HSLColor.fromAHSL(1.0, 30, 1.0, 0.43),
-                shadow: shadow,
-                onPressed: () => setState(() => _selection = '4'),
-              ),
-              SizedBox(height: 32),
               Text(
                 'Pushed: $_selection',
                 style: textStyle.copyWith(color: Colors.black),
