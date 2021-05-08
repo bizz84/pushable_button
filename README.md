@@ -1,6 +1,6 @@
 # Pushable Button
 
-A 3D pushable button. Ideal for important CTAs in the app.
+A 3D pushable button built in Flutter. Ideal for important CTAs in the app.
 
 ![](media/pushable_button.gif)
 
