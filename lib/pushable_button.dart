@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'animation_controller_state.dart';
 
+/// A widget to show a "3D" pushable button
 class PushableButton extends StatefulWidget {
   const PushableButton({
     Key? key,
@@ -15,11 +16,25 @@ class PushableButton extends StatefulWidget {
     this.onPressed,
   })  : assert(height > 0),
         super(key: key);
+
+  /// child widget (normally a Text or Icon)
   final Widget? child;
+
+  /// Color of the top layer
+  /// The color of the bottom layer is derived by decreasing the luminosity by 0.15
   final HSLColor hslColor;
+
+  /// height of the top layer
   final double height;
+
+  /// elevation or "gap" between the top and bottom layer
   final double elevation;
+
+  /// An optional shadow to make the button look better
+  /// This is added to the bottom layer only
   final BoxShadow? shadow;
+
+  /// button pressed callback
   final VoidCallback? onPressed;
 
   @override

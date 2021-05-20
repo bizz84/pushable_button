@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// abstract class to reduce animation controller boilerplate
+/// See: https://codewithandrea.com/videos/reduce-animation-controller-boilerplate-flutter-hooks/
 abstract class AnimationControllerState<T extends StatefulWidget>
     extends State<T> with SingleTickerProviderStateMixin {
   AnimationControllerState(this.animationDuration);
