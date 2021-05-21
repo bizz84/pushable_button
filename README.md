@@ -31,4 +31,4 @@ PushableButton(
 - **shadow**: an optional shadow to make the button look better
 - **onPressed**: button callback
 
-### [LICENSE: MIT](LICENSE.md)
+### [LICENSE: MIT](LICENSE)
