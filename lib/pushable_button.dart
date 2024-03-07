@@ -13,6 +13,8 @@ class PushableButton extends StatefulWidget {
     required this.height,
     this.elevation = 8.0,
     this.shadow,
+    this.borderRadius,
+    this.outline = false,
     this.onPressed,
   })  : assert(height > 0),
         super(key: key);
@@ -33,6 +35,12 @@ class PushableButton extends StatefulWidget {
   /// An optional shadow to make the button look better
   /// This is added to the bottom layer only
   final BoxShadow? shadow;
+
+  /// An optional border radius of the button corners
+  /// If no border radius is provided, the button will use [StadiumBorder]
+  final double? borderRadius;
+
+  final bool outline;
 
   /// button pressed callback
   final VoidCallback? onPressed;
@@ -137,8 +145,9 @@ class _PushableButtonState extends AnimationControllerState<PushableButton> {
                           color: bottomHslColor.toColor(),
                           boxShadow:
                               widget.shadow != null ? [widget.shadow!] : [],
-                          borderRadius:
-                              BorderRadius.circular(widget.height / 2),
+                          borderRadius: widget.borderRadius != null
+                              ? BorderRadius.circular(widget.borderRadius!)
+                              : BorderRadius.circular(widget.height / 2),
                         ),
                       ),
                     ),
@@ -149,10 +158,21 @@ class _PushableButtonState extends AnimationControllerState<PushableButton> {
                       top: top,
                       child: Container(
                         height: widget.height,
-                        decoration: ShapeDecoration(
-                          color: hslColor.toColor(),
-                          shape: StadiumBorder(),
-                        ),
+                        decoration: widget.borderRadius != null
+                            ? BoxDecoration(
+                                border: widget.outline
+                                    ? Border.all(
+                                        width: 1.5,
+                                        color: bottomHslColor.toColor())
+                                    : null,
+                                color: hslColor.toColor(),
+                                borderRadius:
+                                    BorderRadius.circular(widget.borderRadius!),
+                              )
+                            : ShapeDecoration(
+                                color: hslColor.toColor(),
+                                shape: StadiumBorder(),
+                              ),
                         child: Center(child: widget.child),
                       ),
                     ),

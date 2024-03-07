@@ -23,6 +23,8 @@ PushableButton(
     blurRadius: 7,
     offset: Offset(0, 2),
   ),
+  outline: true,
+  borderRadius: 16,
   onPressed: () => print('Button Pressed!'),
 )
 ```
@@ -34,6 +36,8 @@ PushableButton(
 - **elevation**: elevation or "gap" between the top and bottom layer
 - **hslColor**: color of the top layer. `HSLColor` is used instead of `Color` so that the bottom layer is automatically calculated by reducing the luminosity
 - **shadow**: an optional shadow to make the button look better
+- **borderRadius**: an optional border radius for the button corners
+- **outline**: an optional border for the button corners
 - **onPressed**: button callback
 
 ### [LICENSE: MIT](LICENSE)

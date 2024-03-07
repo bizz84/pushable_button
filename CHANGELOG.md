@@ -1,3 +1,9 @@
+## 0.0.3
+
+Add additional property to the package:
+
+- **borderRadius**: an optional border radius for the button corners
+
 ## 0.0.2
 
 Updated GitHub media images.
