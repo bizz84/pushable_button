@@ -13,6 +13,8 @@ class PushableButton extends StatefulWidget {
     required this.height,
     this.elevation = 8.0,
     this.shadow,
+    this.borderRadius,
+    this.outline = false,
     this.onPressed,
   })  : assert(height > 0),
         super(key: key);
@@ -34,29 +36,22 @@ class PushableButton extends StatefulWidget {
   /// This is added to the bottom layer only
   final BoxShadow? shadow;
 
+  /// An optional border radius of the button corners
+  /// If no border radius is provided, the button will use [StadiumBorder]
+  final double? borderRadius;
+
+  final bool outline;
+
   /// button pressed callback
   final VoidCallback? onPressed;
 
   @override
   _PushableButtonState createState() =>
-      _PushableButtonState(Duration(milliseconds: 100));
+      _PushableButtonState(Duration(milliseconds: 50));
 }
 
 class _PushableButtonState extends AnimationControllerState<PushableButton> {
   _PushableButtonState(Duration duration) : super(duration);
-
-  bool _isDragInProgress = false;
-  Offset _gestureLocation = Offset.zero;
-
-  void _handleTapDown(TapDownDetails details) {
-    _gestureLocation = details.localPosition;
-    animationController.forward();
-  }
-
-  void _handleTapUp(TapUpDetails details) {
-    animationController.reverse();
-    widget.onPressed?.call();
-  }
 
   void _handleTapCancel() {
     Future.delayed(Duration(milliseconds: 100), () {
@@ -67,12 +62,14 @@ class _PushableButtonState extends AnimationControllerState<PushableButton> {
   }
 
   void _handleDragStart(DragStartDetails details) {
+    if (widget.onPressed == null) return;
     _gestureLocation = details.localPosition;
     _isDragInProgress = true;
     animationController.forward();
   }
 
   void _handleDragEnd(Size buttonSize) {
+    if (widget.onPressed == null) return;
     //print('drag end (in progress: $_isDragInProgress)');
     if (_isDragInProgress) {
       _isDragInProgress = false;
@@ -95,6 +92,30 @@ class _PushableButtonState extends AnimationControllerState<PushableButton> {
 
   void _handleDragUpdate(DragUpdateDetails details) {
     _gestureLocation = details.localPosition;
+  }
+
+  bool _isDragInProgress = false;
+  Offset _gestureLocation = Offset.zero;
+
+  void _handleTapDown(TapDownDetails details) {
+    if (widget.onPressed == null) return;
+    _gestureLocation = details.localPosition;
+    animationController.forward();
+  }
+
+  void _handleTapUp(TapUpDetails details) {
+    if (widget.onPressed == null) return;
+    if (animationController.status == AnimationStatus.completed) {
+      _reverseThenCallOnPressed();
+    } else {
+      animationController.forward().then((_) => _reverseThenCallOnPressed());
+    }
+  }
+
+  void _reverseThenCallOnPressed() {
+    animationController.reverse().then((_) {
+      widget.onPressed?.call();
+    });
   }
 
   @override
@@ -137,8 +158,9 @@ class _PushableButtonState extends AnimationControllerState<PushableButton> {
                           color: bottomHslColor.toColor(),
                           boxShadow:
                               widget.shadow != null ? [widget.shadow!] : [],
-                          borderRadius:
-                              BorderRadius.circular(widget.height / 2),
+                          borderRadius: widget.borderRadius != null
+                              ? BorderRadius.circular(widget.borderRadius!)
+                              : BorderRadius.circular(widget.height / 2),
                         ),
                       ),
                     ),
@@ -149,10 +171,33 @@ class _PushableButtonState extends AnimationControllerState<PushableButton> {
                       top: top,
                       child: Container(
                         height: widget.height,
-                        decoration: ShapeDecoration(
-                          color: hslColor.toColor(),
-                          shape: StadiumBorder(),
-                        ),
+                        decoration: widget.borderRadius != null
+                            ? BoxDecoration(
+                                border: widget.outline
+                                    ? Border(
+                                        right: BorderSide(
+                                          width: 1.5,
+                                          color: bottomHslColor.toColor(),
+                                        ),
+                                        left: BorderSide(
+                                          width: 1.5,
+                                          color: bottomHslColor.toColor(),
+                                        ),
+                                        top: BorderSide(
+                                          width: 1.5,
+                                          color: bottomHslColor.toColor(),
+                                        ),
+                                        bottom: BorderSide.none,
+                                      )
+                                    : null,
+                                color: hslColor.toColor(),
+                                borderRadius:
+                                    BorderRadius.circular(widget.borderRadius!),
+                              )
+                            : ShapeDecoration(
+                                color: hslColor.toColor(),
+                                shape: StadiumBorder(),
+                              ),
                         child: Center(child: widget.child),
                       ),
                     ),
